@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  
+  config.vm.box = "precise64"
+  config.vm.box_url = 'http://dl.dropbox.com/u/937870/VMs/squeeze64.box'
+
+  config.vm.define :mongo do |mongo_config|
+      mongo_config.vm.forward_port 27017, 27017
+      mongo_config.vm.provision :puppet do |puppet|
+      puppet.manifests_path = "manifests"
+      puppet.manifest_file = "mongo.pp"
+      puppet.module_path = "modules"
+      puppet.options = [
+          '--verbose',
+          #'--debug',
+      ]
+    end
+  end
+  
+end
